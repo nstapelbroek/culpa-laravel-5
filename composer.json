@@ -19,13 +19,13 @@
         "wiki": "https://github.com/rmasters/culpa/wiki"
     },
     "require": {
-        "illuminate/support": "5.1.*",
-        "illuminate/config": "5.1.*",
-        "illuminate/events": "5.1.*"
+        "illuminate/support": "~5.1",
+        "illuminate/config": "~5.1",
+        "illuminate/events": "~5.1"
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "illuminate/database": "5.1.*",
+        "illuminate/database": "~5.1",
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "0.9.*"
     },
