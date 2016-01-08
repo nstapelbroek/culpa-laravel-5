@@ -1,9 +1,11 @@
-# Culpa [![Latest Stable Version](https://poser.pugx.org/rmasters/culpa/v/stable.png)](https://packagist.org/packages/rmasters/culpa) [![master](https://travis-ci.org/rmasters/culpa.png?branch=master)](https://travis-ci.org/rmasters/culpa)
-
+# Culpa for Laravel 5
 
 Blameable extension for Laravel 5 Eloquent ORM models. This extension
 automatically adds references to the authenticated user when creating, updating
 or soft-deleting a model.
+
+**Disclaimer**: I've created this repository because I didn't want to include a dev-master version of [the original fork](https://github.com/nstapelbroek/culpa) in my composer.json.
+Once the original [pull request](https://github.com/rmasters/culpa/pull/14) gets merged, this package will probably become deprecated and you'll be best of switching back within a year.
 
 
 ## Installation
