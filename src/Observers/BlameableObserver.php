@@ -9,6 +9,9 @@
  */
 namespace Culpa\Observers;
 
+use Culpa\Contracts\CreatorAware;
+use Culpa\Contracts\EraserAware;
+use Culpa\Contracts\UpdaterAware;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
@@ -143,6 +146,10 @@ class BlameableObserver
     {
         $model->{$this->getColumn($model, 'created')} = $user->id;
 
+        if ($model instanceof CreatorAware) {
+            $model->setRelation('creator', $user);
+        }
+
         return $model;
     }
 
@@ -158,6 +165,10 @@ class BlameableObserver
     {
         $model->{$this->getColumn($model, 'updated')} = $user->id;
 
+        if ($model instanceof UpdaterAware) {
+            $model->setRelation('updater', $user);
+        }
+
         return $model;
     }
 
@@ -172,6 +183,10 @@ class BlameableObserver
     protected function setDeletedBy(Model $model, $user)
     {
         $model->{$this->getColumn($model, 'deleted')} = $user->id;
+
+        if ($model instanceof EraserAware) {
+            $model->setRelation('eraser', $user);
+        }
 
         return $model;
     }
