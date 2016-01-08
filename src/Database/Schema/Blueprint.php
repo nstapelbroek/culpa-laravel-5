@@ -9,23 +9,24 @@ class Blueprint extends IlluminateBlueprint
      * Single method to configure all blameable fields in the table
      *
      * @param array $fields
+     * @param bool $nullable determine if the column can be NULL
+     * @throws \Exception
      * @see Blueprint::createdBy()
      * @see Blueprint::updatedBy()
      * @see Blueprint::deletedBy()
-     * @throws \Exception
      */
-    public function blameable($fields = array('created', 'updated', 'deleted'))
+    public function blameable($fields = array('created', 'updated', 'deleted'), $nullable = false)
     {
         if (in_array('created', $fields)) {
-            $this->createdBy();
+            $this->createdBy($nullable);
         }
 
         if (in_array('updated', $fields)) {
-            $this->updatedBy();
+            $this->updatedBy($nullable);
         }
 
         if (in_array('deleted', $fields)) {
-            $this->deletedBy();
+            $this->deletedBy($nullable);
         }
     }
 
@@ -33,10 +34,11 @@ class Blueprint extends IlluminateBlueprint
      * Add the blameable creator field
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
+     * @param bool $nullable determine if the column can be NULL
      * @return \Illuminate\Support\Fluent
      * @throws \Exception
      */
-    public function createdBy()
+    public function createdBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.created');
         if (!$columnName) {
@@ -44,6 +46,11 @@ class Blueprint extends IlluminateBlueprint
         }
 
         $field = $this->integer($columnName)->unsigned();
+
+        if (true === $nullable) {
+            $field->nullable();
+        }
+
         $this->addCulpaForeign($columnName);
 
         return $field;
@@ -53,10 +60,11 @@ class Blueprint extends IlluminateBlueprint
      * Add the blameable updater field
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
+     * @param bool $nullable determine if the column can be NULL
      * @return \Illuminate\Support\Fluent
      * @throws \Exception
      */
-    public function updatedBy()
+    public function updatedBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.updated');
         if (!$columnName) {
@@ -64,6 +72,11 @@ class Blueprint extends IlluminateBlueprint
         }
 
         $field = $this->integer($columnName)->unsigned();
+
+        if (true === $nullable) {
+            $field->nullable();
+        }
+
         $this->addCulpaForeign($columnName);
 
         return $field;
@@ -73,10 +86,11 @@ class Blueprint extends IlluminateBlueprint
      * Add the blameable eraser field
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
+     * @param bool $nullable determine if the column can be NULL
      * @return \Illuminate\Support\Fluent
      * @throws \Exception
      */
-    public function deletedBy()
+    public function deletedBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.deleted');
         if (!$columnName) {
@@ -84,6 +98,11 @@ class Blueprint extends IlluminateBlueprint
         }
 
         $field = $this->integer($columnName)->unsigned();
+
+        if (true === $nullable) {
+            $field->nullable();
+        }
+
         $this->addCulpaForeign($columnName);
 
         return $field;

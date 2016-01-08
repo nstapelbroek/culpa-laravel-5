@@ -28,7 +28,7 @@ class FullyBlameableTest extends CulpaTest
         $this->model->title = 'Hello, world!';
         $this->assertTrue($this->model->save());
 
-        $this->model = FullyBlameableModel::find($this->model->id);
+        $this->model = $this->model->fresh();
 
         // Check datetimes are being set properly for sanity's sake
         $this->assertNotNull($this->model->created_at);
@@ -52,7 +52,7 @@ class FullyBlameableTest extends CulpaTest
         // Make sure updated_at > created_at by at least 1 second
         usleep(1.5 * 1000000); // 1.5 seconds
 
-        $this->model = FullyBlameableModel::find(1);
+        $this->model = $this->model->fresh();
         $this->model->title = 'Test Post, please ignore';
         $this->assertTrue($this->model->save());
 
@@ -73,17 +73,17 @@ class FullyBlameableTest extends CulpaTest
     {
         $this->model->title = 'Hello, world!';
         $this->assertTrue($this->model->save());
-
-        $this->model = FullyBlameableModel::find(1);
+        usleep(1.5 * 1000000); // 1.5 seconds
         $this->assertTrue($this->model->delete());
 
         // Reload the model
-        $this->model = FullyBlameableModel::withTrashed()->find(1);
+        $this->model = $this->model->withTrashed()->find($this->model->id);
 
         // Check datetimes are being set properly for sanity's sake
         $this->assertNotNull($this->model->created_at);
-        $this->assertGreaterThan($this->model->created_at, $this->model->updated_at);
+        $this->assertNotNull($this->model->updated_at);
         $this->assertNotNull($this->model->deleted_at);
+        $this->assertGreaterThan($this->model->created_at, $this->model->deleted_at);
 
         $this->assertEquals(1, $this->model->created_by);
         $this->assertEquals(1, $this->model->updated_by);

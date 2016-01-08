@@ -18,13 +18,13 @@ return [
         | The default (commented) option should work for you if you are using the default Auth provider.
         | @see: https://github.com/laravel/framework/issues/9625
         |
-        | @return int|null User ID, or null if not authenticated
+        |  @return User model or null if not authenticated
         |
         |
 
         */
 //        'active_user' => function () {
-//            return Auth::check() ? Auth::user()->id : null;
+//            return Auth::check() ? Auth::user() : null;
 //        },
 
         /*

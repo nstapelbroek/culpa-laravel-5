@@ -9,8 +9,13 @@
  */
 namespace Culpa\Observers;
 
+use Culpa\Contracts\CreatorAware;
+use Culpa\Contracts\EraserAware;
+use Culpa\Contracts\UpdaterAware;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
+use ReflectionClass;
 
 class BlameableObserver
 {
@@ -22,7 +27,7 @@ class BlameableObserver
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function creating($model)
+    public function creating(Model $model)
     {
         $this->updateBlameables($model);
     }
@@ -32,7 +37,7 @@ class BlameableObserver
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function updating($model)
+    public function updating(Model $model)
     {
         $this->updateBlameables($model);
     }
@@ -42,60 +47,72 @@ class BlameableObserver
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function deleting($model)
+    public function deleting(Model $model)
     {
         $this->updateDeleteBlameable($model);
     }
 
     /**
      * Update the blameable fields.
+     *
+     * @param Model $model
+     * @throws \Exception
      */
-    protected function updateBlameables($model)
+    protected function updateBlameables(Model $model)
     {
-        $user = $this->activeUser();
+        $user = $this->getActiveUser();
 
-        if ($user) {
-            // Set updated-by if it has not been touched on this model
-            if ($this->isBlameable($model, 'updated') && !$model->isDirty($this->getColumn($model, 'updated'))) {
-                $this->setUpdatedBy($model, $user);
-            }
+        if (is_null($user)) {
+            return; // Todo: might be wise to implement loggin here
+        }
 
-            // Set created-by if the model does not exist
-            if (
-                $this->isBlameable($model, 'created') && !$model->exists
-                && !$model->isDirty($this->getColumn($model, 'created'))
-            ) {
-                $this->setCreatedBy($model, $user);
-            }
+        // Set updated-by if it has not been touched on this model
+        if ($this->isBlameable($model, 'updated') && !$model->isDirty($this->getColumn($model, 'updated'))) {
+            $this->setUpdatedBy($model, $user);
+        }
+
+        // Determine if we need to touch the created stamp
+        if ($model->exists) {
+            return;
+        }
+
+        // Set created-by if the model does not exist
+        if ($this->isBlameable($model, 'created') && !$model->isDirty($this->getColumn($model, 'created'))) {
+            $this->setCreatedBy($model, $user);
         }
     }
 
     /**
      * Update the deletedBy blameable field.
+     * @param Model $model
+     * @throws \Exception
      */
-    public function updateDeleteBlameable($model)
+    public function updateDeleteBlameable(Model $model)
     {
-        $user = $this->activeUser();
+        $user = $this->getActiveUser();
 
-        if ($user) {
-            // Set deleted-at if it has not been touched
-            if ($this->isBlameable($model, 'deleted') && !$model->isDirty($this->getColumn($model, 'deleted'))) {
-                $this->setDeletedBy($model, $user);
-                $model->save();
-            }
+        if (is_null($user)) {
+            return;
         }
+
+        // Set deleted-at if it has not been touched
+        if ($this->isBlameable($model, 'deleted') && !$model->isDirty($this->getColumn($model, 'deleted'))) {
+            $this->setDeletedBy($model, $user);
+            $model->save();
+        }
+
     }
 
     /**
      * Get the active user.
      *
-     * @return int User ID
+     * @return User
      * @throws \Exception
      */
-    protected function activeUser()
+    protected function getActiveUser()
     {
         if (!Config::has('culpa.users.active_user')) {
-            return Auth::check() ? Auth::user()->id : null;
+            return Auth::check() ? Auth::user() : null;
         }
 
         $fn = Config::get('culpa.users.active_user');
@@ -107,16 +124,31 @@ class BlameableObserver
     }
 
     /**
+     * Get the id of the active user
+     *
+     * @return int User ID
+     * @throws \Exception
+     */
+    protected function getActiveUserIdentifier()
+    {
+        return $this->getActiveUser()->id;
+    }
+
+    /**
      * Set the created-by field of the model.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param int $user
+     * @param User $user
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function setCreatedBy($model, $user)
+    protected function setCreatedBy(Model $model, $user)
     {
-        $model->{$this->getColumn($model, 'created')} = $user;
+        $model->{$this->getColumn($model, 'created')} = $user->id;
+
+        if ($model instanceof CreatorAware) {
+            $model->setRelation('creator', $user);
+        }
 
         return $model;
     }
@@ -125,13 +157,17 @@ class BlameableObserver
      * Set the updated-by field of the model.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param int $user
+     * @param User $user
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function setUpdatedBy($model, $user)
+    protected function setUpdatedBy(Model $model, $user)
     {
-        $model->{$this->getColumn($model, 'updated')} = $user;
+        $model->{$this->getColumn($model, 'updated')} = $user->id;
+
+        if ($model instanceof UpdaterAware) {
+            $model->setRelation('updater', $user);
+        }
 
         return $model;
     }
@@ -140,13 +176,17 @@ class BlameableObserver
      * Set the deleted-by field of the model.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param int $user
+     * @param User $user
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function setDeletedBy($model, $user)
+    protected function setDeletedBy(Model $model, $user)
     {
-        $model->{$this->getColumn($model, 'deleted')} = $user;
+        $model->{$this->getColumn($model, 'deleted')} = $user->id;
+
+        if ($model instanceof EraserAware) {
+            $model->setRelation('eraser', $user);
+        }
 
         return $model;
     }
@@ -158,15 +198,15 @@ class BlameableObserver
      *
      * @return string|null
      */
-    public function getColumn($model, $event)
+    public function getColumn(Model $model, $event)
     {
-        if (array_key_exists($event, $this->getBlameableFields($model))) {
-            $fields = $this->getBlameableFields($model);
-
-            return $fields[$event];
-        } else {
+        if (!array_key_exists($event, $this->getBlameableFields($model))) {
             return;
         }
+
+        $fields = $this->getBlameableFields($model);
+
+        return $fields[$event];
     }
 
     /**
@@ -176,7 +216,7 @@ class BlameableObserver
      *
      * @return bool
      */
-    public function isBlameable($model, $event = null)
+    public function isBlameable(Model $model, $event = null)
     {
         return $event ?
             array_key_exists($event, $this->getBlameableFields($model)) :
@@ -194,15 +234,14 @@ class BlameableObserver
      *   private $blameable = ['created' => 'author_id'];
      *   private $blameable = ['created', 'updated', 'deleted' => 'killedBy'];
      *
-     * @param array|null $fields Optionally, the $blameable array can be given rather than using reflection
-     *
-     * @return array
+     * @param Model $model
+     * @param array|null $blameable Optionally, the $blameable array can be given rather than using reflection
+     * @return array array of blameable fields
      */
-    public static function findBlameableFields($model, $blameable = null)
+    public static function findBlameableFields(Model $model, $blameable = array())
     {
-        if (is_null($blameable)) {
-            // Get the reflected model instance in order to access $blameable
-            $reflectedModel = new \ReflectionClass($model);
+        if (empty($blameable)) {
+            $reflectedModel = new ReflectionClass($model);
             if (!$reflectedModel->hasProperty('blameable')) {
                 return array();
             }
@@ -250,9 +289,10 @@ class BlameableObserver
     /**
      * Get the blameable fields.
      *
+     * @param Model $model
      * @return array
      */
-    protected function getBlameableFields($model)
+    protected function getBlameableFields(Model $model)
     {
         if (isset($this->fields)) {
             return $this->fields;
