@@ -1,4 +1,4 @@
-# Culpa for Laravel 5
+# Culpa for Laravel 5 [![Build Status](https://travis-ci.org/nstapelbroek/culpa-laravel-5.svg?branch=master)](https://travis-ci.org/nstapelbroek/culpa-laravel-5) [![Latest Stable Version](https://poser.pugx.org/nstapelbroek/culpa/v/stable)](https://packagist.org/packages/nstapelbroek/culpa) [![License](https://poser.pugx.org/nstapelbroek/culpa/license)](https://packagist.org/packages/nstapelbroek/culpa) [![Dependency Status](https://www.versioneye.com/user/projects/568f8b4d691e2d00380000b5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/568f8b4d691e2d00380000b5)
 
 Blameable extension for Laravel 5 Eloquent ORM models. This extension
 automatically adds references to the authenticated user when creating, updating
@@ -52,7 +52,7 @@ class Comment extends Model
     set in `deleted_by`.
 
 To activate the automatic updating of these fields, you need to add the blamable trait to the model.
-Thats it! Need more tweak options for Culpa? take a look at the [Usage and Configuration docs](docs/1. Usage and Configuration.md).
+That's it! Need more tweak options for Culpa? take a look at the [Tweaks and Configuration docs](docs/1. Tweaks and Configuration.md).
 
 ## License
 
