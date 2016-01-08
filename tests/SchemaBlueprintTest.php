@@ -5,7 +5,6 @@ namespace Culpa\Tests;
 use Culpa\Database\Schema\Blueprint;
 use Culpa\Tests\Bootstrap\CulpaTest;
 use Illuminate\Database\Schema\Builder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Due to protected methods called from the constructor, i was having trouble to test the actual booting of the Trait.
@@ -17,6 +16,11 @@ class SchemaBlueprintTest extends CulpaTest
      * @var string
      */
     private $tableName = 'testTable';
+
+    /**
+     * @var string
+     */
+    protected $columnName = 'column1';
 
     /**
      * @var Builder
@@ -50,6 +54,27 @@ class SchemaBlueprintTest extends CulpaTest
     }
 
     /**
+     * The CreatedBy method in the blueprint class should create a new created_by column that is nullable
+     */
+    public function testCreatedByNullable()
+    {
+        $columnName = $this->columnName;
+        $this->schemaBuilder->create($this->tableName, function (Blueprint $table) use ($columnName) {
+            $table->text($columnName);
+            $table->createdBy(true);
+        });
+
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, $columnName));
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'created_by'));
+
+        static::$app->make('db')->connection()->insert(
+            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+        );
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $this->assertEquals(1, count($results));
+    }
+
+    /**
      * The updatedBy method in the blueprint class should create a new updated_by column
      */
     public function testUpdatedBy()
@@ -59,6 +84,29 @@ class SchemaBlueprintTest extends CulpaTest
         });
 
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'updated_by'));
+    }
+
+
+    /**
+     * The updatedBy method in the blueprint class should create a new updated_by column that is nullable
+     */
+    public function testUpdatedByNullable()
+    {
+        $columnName = $this->columnName;
+        $this->schemaBuilder->create($this->tableName, function (Blueprint $table) use ($columnName) {
+            $table->text($columnName);
+            $table->updatedBy(true);
+        });
+
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, $columnName));
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'updated_by'));
+
+        static::$app->make('db')->connection()->insert(
+            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+        );
+
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $this->assertEquals(1, count($results));
     }
 
     /**
@@ -71,6 +119,28 @@ class SchemaBlueprintTest extends CulpaTest
         });
 
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'deleted_by'));
+    }
+
+    /**
+     * The deletedBy method in the blueprint class should create a new deleted_by column that is nullable
+     */
+    public function testDeletedByNullable()
+    {
+        $columnName = $this->columnName;
+        $this->schemaBuilder->create($this->tableName, function (Blueprint $table) use ($columnName) {
+            $table->text($columnName);
+            $table->deletedBy(true);
+        });
+
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, $columnName));
+        $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'deleted_by'));
+
+        static::$app->make('db')->connection()->insert(
+            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+        );
+
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $this->assertEquals(1, count($results));
     }
 
     /**
