@@ -6,6 +6,7 @@ or soft-deleting a model.
 
 **Disclaimer**: I've created this repository because I didn't want to include a dev-master version of [the original fork](https://github.com/nstapelbroek/culpa) in my composer.json.
 Once the original [pull request](https://github.com/rmasters/culpa/pull/14) gets merged, this package will probably become deprecated and you'll be best of switching back within a year.
+Due to changes in the namespace and directory structure this package is not backwards compatible with [the original Culpa for laravel < 4](https://github.com/rmasters/culpa).
 
 
 ## Installation

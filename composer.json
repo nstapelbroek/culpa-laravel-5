@@ -1,7 +1,7 @@
 {
-    "name": "rmasters/culpa",
-    "description": "Adds Blameable support to Eloquent models in Laravel",
-    "keywords": ["laravel", "blameable", "created-by"],
+    "name": "nstapelbroek/culpa",
+    "description": "Adds Blameable support to Eloquent models in Laravel 5",
+    "keywords": ["laravel", "blameable", "created-by", "updated-by", "deleted-by", "blamable"],
     "license": "MIT",
     "authors": [
         {
@@ -13,10 +13,9 @@
             "email": "nstapelbroek@gmail.com"
         }
     ],
-    "homepage": "https://github.com/rmasters/culpa",
+    "homepage": "https://github.com/nstapelbroek/culpa-laravel-5",
     "support": {
-        "issues": "https://github.com/rmasters/culpa/issues",
-        "wiki": "https://github.com/rmasters/culpa/wiki"
+        "issues": "https://github.com/nstapelbroek/culpa-laravel-5/issues"
     },
     "require": {
         "illuminate/support": "~5.1",
@@ -35,7 +34,9 @@
             "Culpa\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "conflict": {
+        "rmasters/culpa": "*"
+    },
     "config": {
         "preferred-install": "dist"
     }
