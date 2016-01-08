@@ -39,7 +39,9 @@ trait Blameable
     protected function getFields()
     {
         // Abort if blameble has been disabled explicitly
-        if($this->blameable === false) return false;
+        if (false === $this->blameable) {
+            return false;
+        }
 
         if (!isset($this->fields)) {
             $this->fields = BlameableObserver::findBlameableFields($this, $this->blameable);
