@@ -11,7 +11,7 @@ Due to changes in the namespace and directory structure this package is not back
 
 ## Installation
 
-This package works with Laravel 5.1 (running PHP 5.5.9+).
+This package works with Laravel 5.1 (running PHP 5.6+).
 
 To install the package in your project:
 
