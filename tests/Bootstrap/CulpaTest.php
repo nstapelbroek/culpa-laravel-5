@@ -5,9 +5,8 @@ namespace Culpa\Tests\Bootstrap;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Mockery;
-use PHPUnit\Framework\TestCase;
 
-class CulpaTest extends TestCase
+class CulpaTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Illuminate\Contracts\Container\Container Inversion-of-Control container
