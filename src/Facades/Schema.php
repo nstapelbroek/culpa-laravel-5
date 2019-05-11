@@ -1,10 +1,10 @@
-<?php namespace Culpa\Facades;
+<?php
 
-use Culpa\Database\Schema\Blueprint;
+namespace Culpa\Facades;
+
 use Culpa\Database\Schema\Builder;
 use Illuminate\Database\Connection;
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\MySqlConnection;
+use Culpa\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -49,5 +49,4 @@ class Schema extends Facade
 
         return $schemaBuilder;
     }
-
 }

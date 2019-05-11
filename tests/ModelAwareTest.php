@@ -2,8 +2,8 @@
 
 namespace Culpa\Tests;
 
-use Culpa\Contracts\CreatorAware;
 use Culpa\Contracts\EraserAware;
+use Culpa\Contracts\CreatorAware;
 use Culpa\Contracts\UpdaterAware;
 use Culpa\Tests\Models\FullyBlameableAwareModel;
 

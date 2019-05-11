@@ -2,9 +2,8 @@
 
 namespace Culpa\Tests\Models;
 
-use Culpa\Observers\BlameableObserver;
-use Illuminate\Database\Eloquent\Model;
 use Culpa\Traits\Blameable;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * A model with a silly $blameable value
