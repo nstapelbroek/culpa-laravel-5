@@ -1,12 +1,14 @@
-<?php namespace Culpa\Database\Schema;
+<?php
 
-use Illuminate\Database\Schema\Blueprint as IlluminateBlueprint;
+namespace Culpa\Database\Schema;
+
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Schema\Blueprint as IlluminateBlueprint;
 
 class Blueprint extends IlluminateBlueprint
 {
     /**
-     * Single method to configure all blameable fields in the table
+     * Single method to configure all blameable fields in the table.
      *
      * @param array $fields
      * @param bool $nullable determine if the column can be NULL
@@ -15,7 +17,7 @@ class Blueprint extends IlluminateBlueprint
      * @see Blueprint::updatedBy()
      * @see Blueprint::deletedBy()
      */
-    public function blameable($fields = array('created', 'updated', 'deleted'), $nullable = false)
+    public function blameable($fields = ['created', 'updated', 'deleted'], $nullable = false)
     {
         if (in_array('created', $fields)) {
             $this->createdBy($nullable);
@@ -31,7 +33,7 @@ class Blueprint extends IlluminateBlueprint
     }
 
     /**
-     * Add the blameable creator field
+     * Add the blameable creator field.
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
      * @param bool $nullable determine if the column can be NULL
@@ -41,7 +43,7 @@ class Blueprint extends IlluminateBlueprint
     public function createdBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.created');
-        if (!$columnName) {
+        if (! $columnName) {
             throw new \Exception('No column for the created field is configured, did you publish the Culpa config?');
         }
 
@@ -57,7 +59,7 @@ class Blueprint extends IlluminateBlueprint
     }
 
     /**
-     * Add the blameable updater field
+     * Add the blameable updater field.
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
      * @param bool $nullable determine if the column can be NULL
@@ -67,7 +69,7 @@ class Blueprint extends IlluminateBlueprint
     public function updatedBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.updated');
-        if (!$columnName) {
+        if (! $columnName) {
             throw new \Exception('No column for the updated field is configured, did you publish the Culpa config?');
         }
 
@@ -83,7 +85,7 @@ class Blueprint extends IlluminateBlueprint
     }
 
     /**
-     * Add the blameable eraser field
+     * Add the blameable eraser field.
      *
      * @see Illuminate\Database\Schema\Blueprint::integer()
      * @param bool $nullable determine if the column can be NULL
@@ -93,7 +95,7 @@ class Blueprint extends IlluminateBlueprint
     public function deletedBy($nullable = false)
     {
         $columnName = Config::get('culpa.default_fields.deleted');
-        if (!$columnName) {
+        if (! $columnName) {
             throw new \Exception('No column for the deleted field is configured, did you publish the Culpa config?');
         }
 
@@ -109,7 +111,7 @@ class Blueprint extends IlluminateBlueprint
     }
 
     /**
-     * Add a foreign key constraint to the users table
+     * Add a foreign key constraint to the users table.
      *
      * Failing to configure a users table in the configuration does not break this method, although you
      * should never neglect the foreign keys, the schema blueprint can function without them.

@@ -4,20 +4,20 @@ namespace Culpa\Tests\Bootstrap;
 
 use Culpa\Facades\Schema;
 
-return array(
+return [
     'app' => [
         'aliases' => [
             'Schema' => Schema::class,
         ],
     ],
-    'database' => array(
+    'database' => [
         'default' => 'sqlite',
-        'connections' => array(
-            'sqlite' => array(
+        'connections' => [
+            'sqlite' => [
                 'database' => ':memory:',
                 'driver' => 'sqlite',
                 'prefix' => '',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

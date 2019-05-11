@@ -7,6 +7,7 @@
  * @copyright Ross Masters 2013
  * @license MIT
  */
+
 namespace Culpa\Traits;
 
 use BadMethodCallException;
@@ -27,12 +28,13 @@ trait UpdatedBy
      */
     public function updater()
     {
-        if (!method_exists($this, 'getFields')) {
+        if (! method_exists($this, 'getFields')) {
             throw new BadMethodCallException('You are missing the Blameable Trait');
         }
 
         $fields = $this->getFields();
         $model = Config::get('culpa.users.classname', 'App\User');
+
         return $this->belongsTo($model, $fields['updated']);
     }
 }

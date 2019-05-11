@@ -7,6 +7,7 @@
  * @copyright Ross Masters 2013
  * @license MIT
  */
+
 namespace Culpa\Traits;
 
 use Culpa\Observers\BlameableObserver;
@@ -43,7 +44,7 @@ trait Blameable
             return false;
         }
 
-        if (!isset($this->fields)) {
+        if (! isset($this->fields)) {
             $this->fields = BlameableObserver::findBlameableFields($this, $this->blameable);
         }
 

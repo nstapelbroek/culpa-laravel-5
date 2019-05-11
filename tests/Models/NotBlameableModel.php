@@ -3,7 +3,6 @@
 namespace Culpa\Tests\Models;
 
 use Culpa\Traits\Blameable;
-use Culpa\Observers\BlameableObserver;
 use Illuminate\Database\Eloquent\Model;
 
 /**

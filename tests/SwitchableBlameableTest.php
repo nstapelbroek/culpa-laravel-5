@@ -3,11 +3,9 @@
 namespace Culpa\Tests;
 
 use Culpa\Tests\Bootstrap\CulpaTest;
-use Culpa\Tests\Models\FullyBlameableModel;
 use Culpa\Tests\Models\SwitchableBlameableModel;
-use Illuminate\Support\Facades\Auth;
 
-class DisableBlameableTest extends CulpaTest
+class SwitchableBlameableTest extends CulpaTest
 {
     private $model;
 
@@ -16,7 +14,6 @@ class DisableBlameableTest extends CulpaTest
         parent::setUp();
         $this->model = new SwitchableBlameableModel();
     }
-
 
     public function testModelCanControlBlameableBehavior()
     {

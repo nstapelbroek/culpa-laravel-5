@@ -7,15 +7,16 @@
  * @copyright Ross Masters 2013
  * @license MIT
  */
+
 namespace Culpa\Observers;
 
-use Culpa\Contracts\CreatorAware;
-use Culpa\Contracts\EraserAware;
-use Culpa\Contracts\UpdaterAware;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Auth;
 use ReflectionClass;
+use Culpa\Contracts\EraserAware;
+use Culpa\Contracts\CreatorAware;
+use Culpa\Contracts\UpdaterAware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 class BlameableObserver
 {
@@ -67,7 +68,7 @@ class BlameableObserver
         }
 
         // Set updated-by if it has not been touched on this model
-        if ($this->isBlameable($model, 'updated') && !$model->isDirty($this->getColumn($model, 'updated'))) {
+        if ($this->isBlameable($model, 'updated') && ! $model->isDirty($this->getColumn($model, 'updated'))) {
             $this->setUpdatedBy($model, $user);
         }
 
@@ -77,7 +78,7 @@ class BlameableObserver
         }
 
         // Set created-by if the model does not exist
-        if ($this->isBlameable($model, 'created') && !$model->isDirty($this->getColumn($model, 'created'))) {
+        if ($this->isBlameable($model, 'created') && ! $model->isDirty($this->getColumn($model, 'created'))) {
             $this->setCreatedBy($model, $user);
         }
     }
@@ -96,11 +97,10 @@ class BlameableObserver
         }
 
         // Set deleted-at if it has not been touched
-        if ($this->isBlameable($model, 'deleted') && !$model->isDirty($this->getColumn($model, 'deleted'))) {
+        if ($this->isBlameable($model, 'deleted') && ! $model->isDirty($this->getColumn($model, 'deleted'))) {
             $this->setDeletedBy($model, $user);
             $model->save();
         }
-
     }
 
     /**
@@ -111,12 +111,12 @@ class BlameableObserver
      */
     protected function getActiveUser()
     {
-        if (!Config::has('culpa.users.active_user')) {
+        if (! Config::has('culpa.users.active_user')) {
             return Auth::check() ? Auth::user() : null;
         }
 
         $fn = Config::get('culpa.users.active_user');
-        if (!is_callable($fn)) {
+        if (! is_callable($fn)) {
             throw new \Exception('culpa.users.active_user should be a closure');
         }
 
@@ -124,7 +124,7 @@ class BlameableObserver
     }
 
     /**
-     * Get the id of the active user
+     * Get the id of the active user.
      *
      * @return int User ID
      * @throws \Exception
@@ -200,7 +200,7 @@ class BlameableObserver
      */
     public function getColumn(Model $model, $event)
     {
-        if (!array_key_exists($event, $this->getBlameableFields($model))) {
+        if (! array_key_exists($event, $this->getBlameableFields($model))) {
             return;
         }
 
@@ -238,12 +238,12 @@ class BlameableObserver
      * @param array|null $blameable Optionally, the $blameable array can be given rather than using reflection
      * @return array array of blameable fields
      */
-    public static function findBlameableFields(Model $model, $blameable = array())
+    public static function findBlameableFields(Model $model, $blameable = [])
     {
         if (empty($blameable)) {
             $reflectedModel = new ReflectionClass($model);
-            if (!$reflectedModel->hasProperty('blameable')) {
-                return array();
+            if (! $reflectedModel->hasProperty('blameable')) {
+                return [];
             }
 
             $blameableProp = $reflectedModel->getProperty('blameable');
@@ -255,11 +255,11 @@ class BlameableObserver
             return self::extractBlamableFields($blameable);
         }
 
-        return array();
+        return [];
     }
 
     /**
-     * Internal method that matches the extracted blamable property values with eloquent fields
+     * Internal method that matches the extracted blamable property values with eloquent fields.
      *
      * @param array $blameableValue
      *
@@ -267,8 +267,8 @@ class BlameableObserver
      */
     protected static function extractBlamableFields(array $blameableValue)
     {
-        $fields = array();
-        $checkedFields = array('created', 'updated', 'deleted');
+        $fields = [];
+        $checkedFields = ['created', 'updated', 'deleted'];
 
         foreach ($checkedFields as $possibleField) {
             if (array_key_exists($possibleField, $blameableValue)) {
@@ -277,8 +277,8 @@ class BlameableObserver
             }
 
             if (in_array($possibleField, $blameableValue)) {
-                $defaultValue = $possibleField . '_by';
-                $configKey = 'culpa.default_fields.' . $possibleField;
+                $defaultValue = $possibleField.'_by';
+                $configKey = 'culpa.default_fields.'.$possibleField;
                 $fields[$possibleField] = Config::get($configKey, $defaultValue);
             }
         }

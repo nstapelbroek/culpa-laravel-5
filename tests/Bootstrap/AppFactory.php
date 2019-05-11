@@ -2,15 +2,15 @@
 
 namespace Culpa\Tests\Bootstrap;
 
+use Mockery;
 use Culpa\Tests\Models\User;
 use Illuminate\Config\Repository;
-use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Connectors\ConnectionFactory;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
-use Mockery;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Connectors\ConnectionFactory;
 
 class AppFactory
 {
@@ -26,7 +26,11 @@ class AppFactory
             return $config;
         });
 
-        list($connector, $manager) = $this->getDatabase();
+        $connector = new ConnectionFactory($this->app);
+
+        $manager = new DatabaseManager($this->app, $connector);
+        $manager->setDefaultConnection('sqlite');
+
         $this->app->singleton('db.factory', function () use ($connector) {
             return $connector;
         });
@@ -70,22 +74,12 @@ class AppFactory
         return $applicationRepository;
     }
 
-    private function getDatabase()
-    {
-        $conn = new ConnectionFactory($this->app);
-
-        $manager = new DatabaseManager($this->app, $conn);
-        $manager->setDefaultConnection('sqlite');
-
-        return array($conn, $manager);
-    }
-
     private function getAuth()
     {
-        $user = new User(array(
+        $user = new User([
             'id' => 1,
             'name' => 'Test User',
-        ));
+        ]);
 
         $auth = Mockery::mock('Illuminate\Auth\Guard');
 
