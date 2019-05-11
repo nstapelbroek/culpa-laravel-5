@@ -26,7 +26,11 @@ class AppFactory
             return $config;
         });
 
-        [$connector, $manager] = $this->getDatabase();
+        $connector = new ConnectionFactory($this->app);
+
+        $manager = new DatabaseManager($this->app, $connector);
+        $manager->setDefaultConnection('sqlite');
+
         $this->app->singleton('db.factory', function () use ($connector) {
             return $connector;
         });
@@ -68,16 +72,6 @@ class AppFactory
         $applicationRepository->set('culpa', $packageConfig);
 
         return $applicationRepository;
-    }
-
-    private function getDatabase()
-    {
-        $conn = new ConnectionFactory($this->app);
-
-        $manager = new DatabaseManager($this->app, $conn);
-        $manager->setDefaultConnection('sqlite');
-
-        return [$conn, $manager];
     }
 
     private function getAuth()
