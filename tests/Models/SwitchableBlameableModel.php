@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * A model with all 3 fields and a internal method that disables the blameable fields
+ * A model with all 3 fields and a internal method that disables the blameable fields.
  */
 class SwitchableBlameableModel extends Model
 {
     use CreatedBy, UpdatedBy, DeletedBy, Blameable, SoftDeletes;
     protected $table = 'posts';
-    protected $blameable = array('created', 'updated', 'deleted');
+    protected $blameable = ['created', 'updated', 'deleted'];
 
     public function saveWithoutBlameable()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Blameable auditing support for Laravel's Eloquent ORM
+ * Blameable auditing support for Laravel's Eloquent ORM.
  *
  * @author Ross Masters <ross@rossmasters.com>
  * @copyright Ross Masters 2013
@@ -13,16 +13,15 @@ use Illuminate\Support\ServiceProvider;
 
 class CulpaServiceProvider extends ServiceProvider
 {
-
     private $configLocation;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * @param \Illuminate\Contracts\Foundation\Application $application
      */
     public function __construct($application)
     {
-        $this->configLocation = __DIR__ . '/../config/culpa.php';
+        $this->configLocation = __DIR__.'/../config/culpa.php';
         parent::__construct($application);
     }
 
@@ -60,7 +59,6 @@ class CulpaServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('culpa');
+        return ['culpa'];
     }
-
 }

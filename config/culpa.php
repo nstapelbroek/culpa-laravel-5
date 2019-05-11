@@ -51,7 +51,7 @@ return [
         |
         |
         */
-        'table' => 'users'
+        'table' => 'users',
 
     ],
     /*
@@ -68,5 +68,5 @@ return [
         'created' => 'created_by',
         'updated' => 'updated_by',
         'deleted' => 'deleted_by',
-    ]
+    ],
 ];

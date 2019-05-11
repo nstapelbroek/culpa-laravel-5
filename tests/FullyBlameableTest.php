@@ -3,8 +3,8 @@
 namespace Culpa\Tests;
 
 use Culpa\Tests\Bootstrap\CulpaTest;
-use Culpa\Tests\Models\FullyBlameableModel;
 use Illuminate\Support\Facades\Auth;
+use Culpa\Tests\Models\FullyBlameableModel;
 
 class FullyBlameableTest extends CulpaTest
 {

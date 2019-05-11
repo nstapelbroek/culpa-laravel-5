@@ -2,9 +2,9 @@
 
 namespace Culpa\Tests\Bootstrap;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 use Mockery;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class CulpaTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,20 +15,20 @@ class CulpaTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        if (!isset(self::$app)) {
+        if (! isset(self::$app)) {
             self::$app = AppFactory::create();
         }
 
-        if (!Schema::hasTable('users')) {
+        if (! Schema::hasTable('users')) {
             Schema::create('users', function ($table) {
                 $table->increments('id');
                 $table->string('name');
             });
         }
 
-        DB::insert('insert into users (name) values (?)', array('Test User'));
+        DB::insert('insert into users (name) values (?)', ['Test User']);
 
-        if (!Schema::hasTable('posts')) {
+        if (! Schema::hasTable('posts')) {
             Schema::create('posts', function ($table) {
                 $table->increments('id');
                 $table->string('title');

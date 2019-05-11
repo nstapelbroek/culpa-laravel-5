@@ -2,13 +2,12 @@
 
 namespace Culpa\Tests;
 
+use Culpa\Tests\Models\User;
 use Culpa\Tests\Bootstrap\CulpaTest;
 use Culpa\Tests\Models\FullyBlameableModel;
-use Culpa\Tests\Models\User;
 
 /**
  * Due to protected methods called from the constructor, i was having trouble to test the actual booting of the Trait.
- * @package Culpa\Tests
  */
 class ObserverTest extends CulpaTest
 {

@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Builder;
 
 /**
  * Due to protected methods called from the constructor, i was having trouble to test the actual booting of the Trait.
- * TODO: test a foreign key constraint, cant get this to work in SQLite
+ * TODO: test a foreign key constraint, cant get this to work in SQLite.
  */
 class SchemaBlueprintTest extends CulpaTest
 {
@@ -42,7 +42,7 @@ class SchemaBlueprintTest extends CulpaTest
     }
 
     /**
-     * The CreatedBy method in the blueprint class should create a new created_by column
+     * The CreatedBy method in the blueprint class should create a new created_by column.
      */
     public function testCreatedBy()
     {
@@ -54,7 +54,7 @@ class SchemaBlueprintTest extends CulpaTest
     }
 
     /**
-     * The CreatedBy method in the blueprint class should create a new created_by column that is nullable
+     * The CreatedBy method in the blueprint class should create a new created_by column that is nullable.
      */
     public function testCreatedByNullable()
     {
@@ -68,14 +68,14 @@ class SchemaBlueprintTest extends CulpaTest
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'created_by'));
 
         static::$app->make('db')->connection()->insert(
-            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+            'INSERT INTO '.$this->tableName.'('.$columnName.') VALUES ("testing feature...")'
         );
-        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM '.$this->tableName);
         $this->assertEquals(1, count($results));
     }
 
     /**
-     * The updatedBy method in the blueprint class should create a new updated_by column
+     * The updatedBy method in the blueprint class should create a new updated_by column.
      */
     public function testUpdatedBy()
     {
@@ -86,9 +86,8 @@ class SchemaBlueprintTest extends CulpaTest
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'updated_by'));
     }
 
-
     /**
-     * The updatedBy method in the blueprint class should create a new updated_by column that is nullable
+     * The updatedBy method in the blueprint class should create a new updated_by column that is nullable.
      */
     public function testUpdatedByNullable()
     {
@@ -102,15 +101,15 @@ class SchemaBlueprintTest extends CulpaTest
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'updated_by'));
 
         static::$app->make('db')->connection()->insert(
-            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+            'INSERT INTO '.$this->tableName.'('.$columnName.') VALUES ("testing feature...")'
         );
 
-        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM '.$this->tableName);
         $this->assertEquals(1, count($results));
     }
 
     /**
-     * The deletedBy method in the blueprint class should create a new deleted_by column
+     * The deletedBy method in the blueprint class should create a new deleted_by column.
      */
     public function testDeletedBy()
     {
@@ -122,7 +121,7 @@ class SchemaBlueprintTest extends CulpaTest
     }
 
     /**
-     * The deletedBy method in the blueprint class should create a new deleted_by column that is nullable
+     * The deletedBy method in the blueprint class should create a new deleted_by column that is nullable.
      */
     public function testDeletedByNullable()
     {
@@ -136,15 +135,15 @@ class SchemaBlueprintTest extends CulpaTest
         $this->assertTrue($this->schemaBuilder->hasColumn($this->tableName, 'deleted_by'));
 
         static::$app->make('db')->connection()->insert(
-            'INSERT INTO ' . $this->tableName . '(' . $columnName . ') VALUES ("testing feature...")'
+            'INSERT INTO '.$this->tableName.'('.$columnName.') VALUES ("testing feature...")'
         );
 
-        $results = static::$app->make('db')->connection()->select('SELECT * FROM ' . $this->tableName);
+        $results = static::$app->make('db')->connection()->select('SELECT * FROM '.$this->tableName);
         $this->assertEquals(1, count($results));
     }
 
     /**
-     * The blameable method in the blueprint table should create all three fields
+     * The blameable method in the blueprint table should create all three fields.
      */
     public function testBleamable()
     {
