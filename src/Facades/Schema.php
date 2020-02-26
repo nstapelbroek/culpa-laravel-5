@@ -2,9 +2,9 @@
 
 namespace Culpa\Facades;
 
+use Culpa\Database\Schema\Blueprint;
 use Culpa\Database\Schema\Builder;
 use Illuminate\Database\Connection;
-use Culpa\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Facade;
 
 /**

@@ -2,15 +2,15 @@
 
 namespace Culpa\Tests\Bootstrap;
 
-use Mockery;
 use Culpa\Tests\Models\User;
 use Illuminate\Config\Repository;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Support\Facades\Facade;
+use Mockery;
 
 class AppFactory
 {

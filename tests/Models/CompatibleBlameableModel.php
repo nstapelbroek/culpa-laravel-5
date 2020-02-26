@@ -3,9 +3,9 @@
 namespace Culpa\Tests\Models;
 
 use Culpa\Traits\Blameable;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Config;
 
 /**
  * A model with custom names for fields.

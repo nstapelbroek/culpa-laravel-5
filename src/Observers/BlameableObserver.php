@@ -10,13 +10,13 @@
 
 namespace Culpa\Observers;
 
-use ReflectionClass;
-use Culpa\Contracts\EraserAware;
 use Culpa\Contracts\CreatorAware;
+use Culpa\Contracts\EraserAware;
 use Culpa\Contracts\UpdaterAware;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 class BlameableObserver
 {
