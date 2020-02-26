@@ -2,8 +2,8 @@
 
 namespace Culpa\Database\Schema;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Schema\Blueprint as IlluminateBlueprint;
+use Illuminate\Support\Facades\Config;
 
 class Blueprint extends IlluminateBlueprint
 {

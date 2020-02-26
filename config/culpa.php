@@ -23,9 +23,9 @@ return [
         |
 
         */
-//        'active_user' => function () {
-//            return Auth::check() ? Auth::user() : null;
-//        },
+        //        'active_user' => function () {
+        //            return Auth::check() ? Auth::user() : null;
+        //        },
 
         /*
         |--------------------------------------------------------------------------

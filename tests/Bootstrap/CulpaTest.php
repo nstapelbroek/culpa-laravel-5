@@ -2,9 +2,9 @@
 
 namespace Culpa\Tests\Bootstrap;
 
-use Mockery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Mockery;
 
 class CulpaTest extends \PHPUnit_Framework_TestCase
 {
