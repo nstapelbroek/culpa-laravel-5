@@ -1,6 +1,6 @@
-# Culpa for Laravel 5 [![Build Status](https://travis-ci.org/nstapelbroek/culpa-laravel-5.svg?branch=master)](https://travis-ci.org/nstapelbroek/culpa-laravel-5) [![Latest Stable Version](https://poser.pugx.org/nstapelbroek/culpa/v/stable?format=plastic)](https://packagist.org/packages/nstapelbroek/culpa) [![License](https://poser.pugx.org/nstapelbroek/culpa/license)](https://packagist.org/packages/nstapelbroek/culpa) [![Dependency Status](https://www.versioneye.com/user/projects/568f8b4d691e2d00380000b5/badge.svg)](https://www.versioneye.com/user/projects/568f8b4d691e2d00380000b5)
+# Culpa for Laravel 5 & 6 [![Build Status](https://travis-ci.org/nstapelbroek/culpa-laravel-5.svg?branch=master)](https://travis-ci.org/nstapelbroek/culpa-laravel-5) [![Latest Stable Version](https://poser.pugx.org/nstapelbroek/culpa/v/stable?format=plastic)](https://packagist.org/packages/nstapelbroek/culpa) [![License](https://poser.pugx.org/nstapelbroek/culpa/license)](https://packagist.org/packages/nstapelbroek/culpa) 
 
-Blameable extension for Laravel 5 Eloquent ORM models. This extension
+Blameable extension for Laravel 5 & 6 Eloquent ORM models. This extension
 automatically adds references to the authenticated user when creating, updating
 or soft-deleting a model.
 
@@ -10,8 +10,6 @@ Due to changes in the namespace and directory structure this package is not back
 
 
 ## Installation
-
-This package works with Laravel 5.1 (running PHP 5.6+).
 
 To install the package in your project:
 
@@ -34,11 +32,11 @@ use Culpa\Traits\Blameable;
 use Culpa\Traits\CreatedBy;
 use Culpa\Traits\DeletedBy;
 use Culpa\Traits\UpdatedBy;
-use Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use Blameable, CreatedBy, UpdatedBy;
+    use Blameable, CreatedBy, UpdatedBy, DeletedBy;
 
     protected $blameable = array('created', 'updated', 'deleted');
 
@@ -48,8 +46,8 @@ class Comment extends Model
 
 *   On create, the authenticated user will be set in `created_by`,
 *   On create and update, the authenticated user will be set in `updated_by`,
-*   Additionally, if the model was soft-deletable, the authenticated user will be
-    set in `deleted_by`.
+*   If the model was soft-deletable, the authenticated user will be
+    set in `deleted_by` on deletion.
 
 To activate the automatic updating of these fields, you need to add the blamable trait to the model.
 That's it! Need more tweak options for Culpa? take a look at the [Tweaks and Configuration docs](docs/1. Tweaks and Configuration.md).
