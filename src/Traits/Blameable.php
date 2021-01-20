@@ -17,7 +17,7 @@ use Culpa\Observers\BlameableObserver;
  */
 trait Blameable
 {
-    /** @var array $fields Mapping of events to fields */
+    /** @var array Mapping of events to fields */
     private $fields;
 
     /**
