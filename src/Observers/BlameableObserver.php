@@ -20,7 +20,7 @@ use ReflectionClass;
 
 class BlameableObserver
 {
-    /** @var array $fields Mapping of events to fields */
+    /** @var array Mapping of events to fields */
     private $fields;
 
     /**
